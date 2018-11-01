@@ -18,6 +18,7 @@ public class AngleConstraint : MonoBehaviour {
 			_childJoint = value;
 			if(_childJoint){
 				twistAxis = (_childJoint.position-transform.position).normalized;
+				twistAxis = Quaternion.Inverse(transform.rotation) * twistAxis;
 			}
 		}
 	}
@@ -43,7 +44,8 @@ public class AngleConstraint : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	//void Update () {
+	void LateUpdate () {
 		ApplyConstraint();
 		_prevRotation = transform.localRotation;
 	}
