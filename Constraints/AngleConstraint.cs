@@ -46,7 +46,8 @@ public class AngleConstraint : MonoBehaviour {
 	// Update is called once per frame
 	//void Update () {
 	void LateUpdate () {
-		ApplyConstraint();
+		//ApplyConstraint();
+		//ApplyConstraint(transform.rotation);
 		_prevRotation = transform.localRotation;
 	}
 
@@ -78,6 +79,33 @@ public class AngleConstraint : MonoBehaviour {
 		Quaternion newSwingQ = Quaternion.FromToRotation(projTwistAxis, projNewTwistAxis);
 
 		transform.localRotation = _prevRotation * newSwingQ;
+	}
+
+	public void ApplyConstraint(Quaternion q){
+		Quaternion localQ = ConvertToLocalRotation(q);
+		Quaternion deltaQ = Quaternion.Inverse(_prevRotation) * localQ;
+		Vector3 newTwistAxis = deltaQ * twistAxis;
+
+		// apply constraint
+		// project twist axis before and after rotation on the plane
+		// perpendicular to rotation axis.
+		Vector3 projTwistAxis = ProjectDirection(twistAxis, rotateAxis);
+		Vector3 projNewTwistAxis = ProjectDirection(newTwistAxis, rotateAxis);
+		Quaternion newSwingQ = Quaternion.FromToRotation(projTwistAxis, projNewTwistAxis);
+
+		transform.localRotation = _prevRotation * newSwingQ;
+	}
+
+	private Quaternion ConvertToLocalRotation(Quaternion worldQ){
+		// convert worldQ to local rotation.
+		// worldQ = parentWorldRotation * localRotation;
+		// so localRotation = inverse(parentWorldRotation) * worldQ
+		if(transform.parent){
+			Quaternion parentQ = transform.parent.rotation;
+			return Quaternion.Inverse(parentQ) * worldQ;
+		}else{
+			return worldQ;
+		}
 	}
 
 	private void DecomposeRotation(Quaternion q, Vector3 axis,
