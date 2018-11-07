@@ -66,7 +66,7 @@ public class HingeConstraintEditor : Editor{
 
 		// max angle limits
 		EditorGUI.BeginChangeCheck();
-		float max = EditorGUILayout.Slider("Max Angle", constraint.maxAngle, -180f, 360);
+		float max = EditorGUILayout.Slider("Max Angle", constraint.maxAngle, -180f, 180);
 		if (EditorGUI.EndChangeCheck()){
 			Undo.RecordObject(constraint, "Change Max Angle Limit");
 			constraint.maxAngle = max;
@@ -80,9 +80,7 @@ public class HingeConstraintEditor : Editor{
 	private void DrawAxes(){
 		Vector3 p = constraint.transform.position;
 		Vector3 axis = ToWorldSpace(constraint.rotationAxis).normalized;
-
 		Vector3 crossAxis = ToWorldSpace(constraint.crossAxis);
-
 
 		Color c1 = new Color(0.667f, 1.0f, 0.0f, 1.0f);
 		Color c2 = new Color(0.667f, 1.0f, 0.0f, 0.1f);
