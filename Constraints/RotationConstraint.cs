@@ -101,6 +101,29 @@ public abstract class RotationConstraint : MonoBehaviour {
 		return q;
 	}
 
+	// Set local rotation with constraint applied.
+	public void SetLocalRotation(Quaternion localRotation){
+		transform.localRotation = ApplyConstraint(localRotation);
+	}
+
+	// Set world rotation with constraint applied.
+	public void SetWorldRotation(Quaternion worldRotation){
+		transform.localRotation = ApplyConstraint(
+			ConvertToLocalRotation(worldRotation));
+	}
+
+	public Quaternion ConvertToLocalRotation(Quaternion worldRotation){
+		// convert worldRotation to local rotation.
+		// worldRotation = parentWorldRotation * localRotation;
+		// so localRotation = inverse(parentWorldRotation) * worldQ
+		if(transform.parent){
+			Quaternion parentQ = transform.parent.rotation;
+			return Quaternion.Inverse(parentQ) * worldRotation;
+		}else{
+			return worldRotation;
+		}
+	}
+
 	void Awake() {
 		SetDefaultLocalRotation();
 	}

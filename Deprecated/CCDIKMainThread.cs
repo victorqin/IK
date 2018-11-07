@@ -87,15 +87,15 @@ public class CCDIKMainThread : MonoBehaviour {
 
 		Quaternion fromToRotation = Quaternion.FromToRotation(boneToEffector, boneToGoal);
 
-		// apply the new rotation first, then apply the old rotation.
-		// This is because the new rotation is created based on no rotation
+		// Apply the old rotation first, then the new rotation.
+		// This is because the new rotation is created based on old rotation
 		// applied to the object.
 		Quaternion newRotation = fromToRotation * bone.rotation;
 
 		// check whether any constraint attached to the bone
-		AngleConstraint constraint = bone.GetComponent<AngleConstraint>();
+		RotationConstraint constraint = bone.GetComponent<RotationConstraint>();
 		if(constraint){
-			constraint.ApplyConstraint(newRotation);
+			constraint.SetWorldRotation(newRotation);
 		}else{
 			bone.rotation = newRotation;
 		}

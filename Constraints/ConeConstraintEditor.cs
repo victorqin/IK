@@ -57,7 +57,7 @@ public class ConeConstraintEditor : RotationConstraintEditor{
 
 		// cone angle
 		EditorGUI.BeginChangeCheck();
-		float coneAngle = EditorGUILayout.Slider("Cone Angle", constraint.coneAngle, 0f, 90f);
+		float coneAngle = EditorGUILayout.Slider("Cone Angle", constraint.coneAngle, 0f, 180f);
 		if (EditorGUI.EndChangeCheck()){
 			Undo.RecordObject(constraint, "Change Cone Angle");
 			constraint.coneAngle = coneAngle;
