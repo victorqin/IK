@@ -110,8 +110,6 @@ public class HingeConstraint : MonoBehaviour {
 
 	// Apply constraint to rotation.
 	// Input is the new local rotation.
-	// Return true if rotation is modified due to the constraint.
-	// Make sure rotation is in local space.
 	public Quaternion ApplyConstraint(Quaternion localRotation){
 		Quaternion deltaLocalRotation =
 			Quaternion.Inverse(defaultLocalRotation) * localRotation;
