@@ -6,8 +6,13 @@ using UnityEngine;
 public class HingeConstraint : MonoBehaviour {
 	public bool autoUpdate = true;
 
-	// rotation axis
+	[SerializeField]		//for recording undo step
 	private Vector3 _rotationAxis = Vector3.forward;
+
+	// Here we make _crossAxis serialized. If not, value change due to
+	// change of rotationAxis through inspector editor won't be recorded.
+	// Leaving _crossAxis to it's initial value.
+	[SerializeField]
 	private Vector3 _crossAxis = Vector3.up;	// where 0 degree starts
 	public Vector3 rotationAxis{
 		get{
@@ -38,29 +43,33 @@ public class HingeConstraint : MonoBehaviour {
 	private float _minAngle = -90.0f;
 	[SerializeField]
 	private float _maxAngle = 90.0f;
+
+	// range of minAngle is [-180, 180]
 	public float minAngle{
 		get{
 			return _minAngle;
 		}
 		set{
-			value = NormalizeAngle(value);
 			if(value > _maxAngle){
 				Debug.LogError("minAngle should NOT be greater than maxAngle.");
 				return;
 			}
+			value = NormalizeAngle(value);
 			_minAngle = value;
 		}
 	}
+
+	// range of maxAngle is [-180, 180]
 	public float maxAngle{
 		get{
 			return _maxAngle;
 		}
 		set{
-			value = NormalizeAngle(value);
-			if(value < _maxAngle){
+			if(value < _minAngle){
 				Debug.LogError("maxAngle should NOT be smaller than minAngle.");
 				return;
 			}
+			value = NormalizeAngle(value);
 			_maxAngle = NormalizeAngle(value);
 		}
 	}
@@ -140,10 +149,10 @@ public class HingeConstraint : MonoBehaviour {
 
 	// normalize angle to [-180, 180]
 	private float NormalizeAngle(float angle){
-		while(angle<= -180.0f){
+		while(angle< -180.0f){
 			angle += 360.0f;
 		}
-		while(angle>= 180.0f){
+		while(angle> 180.0f){
 			angle -= 360.0f;
 		}
 		return angle;
