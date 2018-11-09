@@ -40,6 +40,8 @@ public class HingeConstraintEditor : RotationConstraintEditor{
 		// of OnInspectorGUI.
         serializedObject.Update ();
 
+		bool anythingChanged = false;
+
 		// auto update checkbox
 		EditorGUILayout.PropertyField(_autoUpdateP, new GUIContent("Auto Update"));
 
@@ -50,6 +52,7 @@ public class HingeConstraintEditor : RotationConstraintEditor{
 		if (EditorGUI.EndChangeCheck()){
 			Undo.RecordObject(constraint, "Change Rotation Axis");
 			constraint.rotationAxis = axis;
+			anythingChanged = true;
 		}
 
 		// use angle limits checkbox
@@ -61,6 +64,7 @@ public class HingeConstraintEditor : RotationConstraintEditor{
 		if (EditorGUI.EndChangeCheck()){
 			Undo.RecordObject(constraint, "Change Min Angle Limit");
 			constraint.minAngle = min;
+			anythingChanged = true;
 		}
 
 		// max angle limits
@@ -69,6 +73,11 @@ public class HingeConstraintEditor : RotationConstraintEditor{
 		if (EditorGUI.EndChangeCheck()){
 			Undo.RecordObject(constraint, "Change Max Angle Limit");
 			constraint.maxAngle = max;
+			anythingChanged = true;
+		}
+
+		if(anythingChanged){
+			EditorUtility.SetDirty(constraint);
 		}
 
 		// Apply changes to the serializedProperty - always do this in the end

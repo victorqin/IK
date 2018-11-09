@@ -95,6 +95,7 @@ public class CCDIKMainThread : MonoBehaviour {
 		// check whether any constraint attached to the bone
 		RotationConstraint constraint = bone.GetComponent<RotationConstraint>();
 		if(constraint){
+			constraint.autoUpdate = false;
 			constraint.SetWorldRotation(newRotation);
 		}else{
 			bone.rotation = newRotation;

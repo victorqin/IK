@@ -69,7 +69,9 @@ public class ConeConstraint : RotationConstraint{
 		if(autoUpdate){
 			transform.localRotation = ApplyConstraint(transform.localRotation);
 		}else{
-			DecomposeRotation(transform.localRotation, rotationAxis,
+			Quaternion deltaLocalRotation =
+				Quaternion.Inverse(defaultLocalRotation) * transform.localRotation;
+			DecomposeRotation(deltaLocalRotation, rotationAxis,
 				out _swingRotation, out _twistRotation);
 		}
 	}
